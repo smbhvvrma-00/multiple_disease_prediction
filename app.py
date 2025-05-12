@@ -1,4 +1,3 @@
-
 import os
 import pickle
 import streamlit as st
@@ -9,22 +8,17 @@ st.set_page_config(page_title="Health Assistant",
                    layout="wide",
                    page_icon="🧑‍⚕️")
 
-    
 # getting the working directory of the main.py
 working_dir = os.path.dirname(os.path.abspath(__file__))
 
 # loading the saved models
-
 diabetes_model = pickle.load(open(f'{working_dir}/saved_models/diabetes_model.sav', 'rb'))
-
 heart_disease_model = pickle.load(open(f'{working_dir}/saved_models/heart_disease_model.sav', 'rb'))
-
 parkinsons_model = pickle.load(open(f'{working_dir}/saved_models/parkinsons_model.sav', 'rb'))
 
 # sidebar for navigation
 with st.sidebar:
     selected = option_menu('Multiple Disease Prediction System',
-
                            ['Diabetes Prediction',
                             'Heart Disease Prediction',
                             'Parkinsons Prediction'],
@@ -32,10 +26,8 @@ with st.sidebar:
                            icons=['activity', 'heart', 'person'],
                            default_index=0)
 
-
 # Diabetes Prediction Page
 if selected == 'Diabetes Prediction':
-
     # page title
     st.title('Diabetes Prediction using ML')
 
@@ -66,31 +58,27 @@ if selected == 'Diabetes Prediction':
     with col2:
         Age = st.text_input('Age of the Person')
 
-
     # code for Prediction
     diab_diagnosis = ''
 
     # creating a button for Prediction
-
     if st.button('Diabetes Test Result'):
-
-        user_input = [Pregnancies, Glucose, BloodPressure, SkinThickness, Insulin,
-                      BMI, DiabetesPedigreeFunction, Age]
-
-        user_input = [float(x) for x in user_input]
-
-        diab_prediction = diabetes_model.predict([user_input])
-
-        if diab_prediction[0] == 1:
-            diab_diagnosis = 'The person is diabetic'
-        else:
-            diab_diagnosis = 'The person is not diabetic'
+        try:
+            user_input = [Pregnancies, Glucose, BloodPressure, SkinThickness, Insulin,
+                          BMI, DiabetesPedigreeFunction, Age]
+            user_input = [float(x) for x in user_input]
+            diab_prediction = diabetes_model.predict([user_input])
+            if diab_prediction[0] == 1:
+                diab_diagnosis = 'The person is diabetic'
+            else:
+                diab_diagnosis = 'The person is not diabetic'
+        except ValueError:
+            diab_diagnosis = "Please enter valid numeric values for all fields."
 
     st.success(diab_diagnosis)
 
 # Heart Disease Prediction Page
 if selected == 'Heart Disease Prediction':
-
     # page title
     st.title('Heart Disease Prediction using ML')
 
@@ -139,25 +127,22 @@ if selected == 'Heart Disease Prediction':
     heart_diagnosis = ''
 
     # creating a button for Prediction
-
     if st.button('Heart Disease Test Result'):
-
-        user_input = [age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal]
-
-        user_input = [float(x) for x in user_input]
-
-        heart_prediction = heart_disease_model.predict([user_input])
-
-        if heart_prediction[0] == 1:
-            heart_diagnosis = 'The person is having heart disease'
-        else:
-            heart_diagnosis = 'The person does not have any heart disease'
+        try:
+            user_input = [age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal]
+            user_input = [float(x) for x in user_input]
+            heart_prediction = heart_disease_model.predict([user_input])
+            if heart_prediction[0] == 1:
+                heart_diagnosis = 'The person is having heart disease'
+            else:
+                heart_diagnosis = 'The person does not have any heart disease'
+        except ValueError:
+            heart_diagnosis = "Please enter valid numeric values for all fields."
 
     st.success(heart_diagnosis)
 
 # Parkinson's Prediction Page
 if selected == "Parkinsons Prediction":
-
     # page title
     st.title("Parkinson's Disease Prediction using ML")
 
@@ -234,18 +219,17 @@ if selected == "Parkinsons Prediction":
 
     # creating a button for Prediction    
     if st.button("Parkinson's Test Result"):
-
-        user_input = [fo, fhi, flo, Jitter_percent, Jitter_Abs,
-                      RAP, PPQ, DDP,Shimmer, Shimmer_dB, APQ3, APQ5,
-                      APQ, DDA, NHR, HNR, RPDE, DFA, spread1, spread2, D2, PPE]
-
-        user_input = [float(x) for x in user_input]
-
-        parkinsons_prediction = parkinsons_model.predict([user_input])
-
-        if parkinsons_prediction[0] == 1:
-            parkinsons_diagnosis = "The person has Parkinson's disease"
-        else:
-            parkinsons_diagnosis = "The person does not have Parkinson's disease"
+        try:
+            user_input = [fo, fhi, flo, Jitter_percent, Jitter_Abs,
+                          RAP, PPQ, DDP,Shimmer, Shimmer_dB, APQ3, APQ5,
+                          APQ, DDA, NHR, HNR, RPDE, DFA, spread1, spread2, D2, PPE]
+            user_input = [float(x) for x in user_input]
+            parkinsons_prediction = parkinsons_model.predict([user_input])
+            if parkinsons_prediction[0] == 1:
+                parkinsons_diagnosis = "The person has Parkinson's disease"
+            else:
+                parkinsons_diagnosis = "The person does not have Parkinson's disease"
+        except ValueError:
+            parkinsons_diagnosis = "Please enter valid numeric values for all fields."
 
     st.success(parkinsons_diagnosis)
